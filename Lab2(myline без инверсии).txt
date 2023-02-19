@@ -1,0 +1,82 @@
+#include <graphics.h>
+
+void myline(int x1,int y1, int x2,int y2, int c)
+{ 
+    int y, x, buf, N, M;
+    y = y1;
+    x = x1;
+    N = x2 - x;
+    M = y2 - y;
+    buf = 0;
+    
+    putpixel(x, y, c); // начало координат
+    
+    if (N > 0 && M >= 0) // слева-направо, сверху-вниз или слева-направо, горизонтальная
+    {
+    	for (x += 1; x <= x2; x++)
+    	{ 
+        	buf += M;
+        	if (buf >= N)
+            	while (buf >= N)
+            	{
+                	buf -= N;
+                	y++;
+                	putpixel(x, y, c);
+            	}
+       		else
+            	putpixel(x, y, c);
+    	}
+	}
+	else if (N <= 0 && M > 0) // справа-налево, сверху-вниз или справа-налево, горизонтальная
+	{
+		N = x1 - x2;
+		for (y += 1; y <= y2; y++)
+		{
+			buf += N;
+			if (buf >= M)
+				while (buf >= M)
+				{
+					buf -= M;
+					x--;
+					putpixel(x, y, c);
+				}
+			else
+				putpixel(x, y, c);
+		}
+	}
+	else if (N >= 0 && M < 0) // слева-направо, снизу-вверх или вертикальная, снизу-вверх
+	{
+		M *= (-1);
+		for (y -= 1; y >= y2; y--)
+    	{
+        	buf += N;
+        	if (buf >= M)
+            	while (buf >= M)
+            	{
+                	buf -= M;
+                	x++;
+                	putpixel(x, y, c);
+            	}
+        	else
+            	putpixel(x, y, c);
+    	}
+	}
+	else if (N < 0 && M <= 0) // справа-налево, сверху-вниз или вертикальная, сверху-вниз
+	{
+		N *= (-1);
+		M *= (-1);
+		for (x -= 1; x >= x2; x--)
+		{
+			buf += M;
+			if (buf >= N)
+				while (buf >= N)
+				{
+					buf -= N;
+					y--;
+					putpixel(x, y, c);
+				}
+			else
+				putpixel(x, y, c);
+		}
+	}
+}
